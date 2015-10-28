@@ -1,5 +1,7 @@
 <?php
-	$dsn = 'mysql:dbname=shorten;host=localhost';
-   $username = 'root';
-   $password = '';
+   define("DB_PDODRIVER", "mysql");
+   define("DB_HOST", "");
+   define("DB_NAME", "");
+   define("DB_USER", "");
+   define("DB_PASS", "");
 ?>
