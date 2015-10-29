@@ -18,9 +18,10 @@ include_once("_db-config.php");
    
    // Include all necessary classes
    ev_include("user-service.php");
-    
+   
    // Function to log the user in
    public function userLogin($username, $user_password) {
+      
       // Open a connection to the database
       try {
          $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
