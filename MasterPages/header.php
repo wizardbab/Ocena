@@ -11,18 +11,39 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">FAQ</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#about">About</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#faq">FAQ</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><strong>Joseph Gengarella</strong></a></li>
+            <li><a href="#" data-toggle="modal" data-target="#signIn"><strong>Log in</strong></a></li>
             <li class="dropdown">
                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-check dropdown-toggle"></span></a>
+               <span class="glyphicon glyphicon-check dropdown-toggle"></span></a>
                <ul class="dropdown-menu">
-                <li><a href="#">One Class</a></li>
-                <li><a href="#">Another Class</a></li>
-                <li><a href="#">A Third Class</a></li>
+                  <li>
+                     <a href="#">
+                        <h3>CS 451</h3>
+                        <span class="glyphicon glyphicon-plus-sign plus-glyph"> </span>
+   
+                        <h4>Mike Geary</h4>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#">
+                        <h3>CS 431</h3>
+                        <span class="glyphicon glyphicon-plus-sign plus-glyph"> </span>
+   
+                        <h4>Robert Howell</h4>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#">
+                        <h3>BA 403</h3>
+                        <span class="glyphicon glyphicon-plus-sign plus-glyph"> </span>
+   
+                        <h4>Lonnie Smith</h4>
+                     </a>
+                  </li>
                </ul>
             </li>
           </ul>
