@@ -15,8 +15,21 @@
    if (isset($_POST['red'])) {
       changeTheme("red");
    }
+   
    if (isset($_POST['blue'])) {
       changeTheme("blue");
+   }
+   
+   if (isset($_POST['orange'])) {
+      changeTheme("orange");
+   }
+   
+   if (isset($_POST['purple'])) {
+      changeTheme("purple");
+   }
+   
+   if (isset($_POST['pink'])) {
+      changeTheme("pink");
    }
 
 ?>

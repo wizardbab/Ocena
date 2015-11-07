@@ -3,7 +3,11 @@
 <link rel="stylesheet" href="/includes/css/bootstrap-slider.css" type="text/css" >
 
 <link rel="stylesheet" href="/includes/css/styles.css" type="text/css" >
-<link rel="stylesheet" href="/includes/css/themes/<?php echo $_SESSION['theme']; ?>.css" type="text/css" >
+<?php
+   if (isset($_SESSION['theme'])) {
+      echo '<link rel="stylesheet" href="/includes/css/themes/'.$_SESSION['theme'].'.css" type="text/css" >';
+   }
+?>
 
 <script src="/includes/js/jquery.js" type="text/javascript"></script>
 

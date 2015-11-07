@@ -1,67 +1,67 @@
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
-   background-color: #4FBEFF;
-   border-top: 5px solid #284578;
-   border-bottom: 5px solid #4FBEFF;
+   background-color: #FFAC4F;
+   border-top: 5px solid #785128;
+   border-bottom: 5px solid #FFAC4F;
 }
 
 .navbar-default .navbar-nav>li>a:hover {
-   border-top: 5px solid #284578;
+   border-top: 5px solid #785128;
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-   border-top: 5px solid #284578;
-   border-bottom: 5px solid #284578;
-   background-color: #4FBEFF;
+   border-top: 5px solid #785128;
+   border-bottom: 5px solid #785128;
+   background-color: #FFAC4F;
 }
 
 .dropdown-menu:after {
-  border-bottom: 6px solid #4FBEFF;
+  border-bottom: 6px solid #FFAC4F;
 }
 
 .dropdown-menu {
-   background-color: #4FBEFF;
+   background-color: #FFAC4F;
 }
 
 .dropdown-menu>li>a>h3 {
-   color: #4FBEFF;
+   color: #FFAC4F;
 }
 
 .plus-glyph {
-   color: #4FBEFF;
+   color: #FFAC4F;
 }
 
 input.cmn-toggle-round-flat + label {
-  background-color: #4FBEFF;
+  background-color: #FFAC4F;
 }
 
 input.cmn-toggle-round-flat + label:before {
-  background-color: #4FBEFF;
+  background-color: #FFAC4F;
 }
 
 input.cmn-toggle-round-flat:checked + label {
-  background-color: #4FBEFF;
+  background-color: #FFAC4F;
 }
 
 .modal-header {
-   background-color: #4FBEFF;
+   background-color: #FFAC4F;
 }
 
 .modal-footer {
-   background-color: #4FBEFF;
+   background-color: #FFAC4F;
 }
 
 .form-style-6 input[type="submit"],
 .form-style-6 input[type="button"]{
-   background: #4FBEFF;
-   border-bottom: 2px solid #284578;
+   background: #FFAC4F;
+   border-bottom: 2px solid #785128;
 }
 
 .form-style-6 input[type="submit"]:hover,
 .form-style-6 input[type="button"]:hover{
-    background: #427BD0;
+    background: #D09442;
 }
 
 .search .results a:hover {
-    border-color: #284578;
-    background-color: #4FBEFF;
+    border-color: #785128;
+    background-color: #FFAC4F;
 }
