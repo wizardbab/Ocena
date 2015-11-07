@@ -1,5 +1,5 @@
          <section class="main-search">
-            <form class="search" method="post" action="index.html" >
+            <form class="search" method="post" action="index.html" autocomplete="off">
             <input type="text" name="q" placeholder="Search..." />
                <ul class="results" >
          			<li><a href="index.html">Search Result #1<span class="glyphicon glyphicon-circle-arrow-right pull-right dropdown-glyph"></span><br /><span>Description...</span></a></li>

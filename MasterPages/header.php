@@ -15,8 +15,10 @@
             <li><a href="#" data-toggle="modal" data-target="#faq">FAQ</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" data-toggle="modal" data-target="#signIn"><strong>Log in</strong></a></li>
-            <li class="dropdown">
+            <?php 
+               if (isset($_SESSION['user_id'])) {
+                  echo '<li><a href="#" data-toggle="modal" data-target="#settings"><strong>'.$_SESSION['f_name'].' '.$_SESSION['l_name'].'</strong></a></li>
+                              <li class="dropdown">
                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                <span class="glyphicon glyphicon-check dropdown-toggle"></span></a>
                <ul class="dropdown-menu">
@@ -45,7 +47,12 @@
                      </a>
                   </li>
                </ul>
-            </li>
+            </li>';
+               } else {
+                  echo '<li><a href="#" data-toggle="modal" data-target="#signIn"><strong>Log in</strong></a></li>';
+               }  
+                
+            ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
