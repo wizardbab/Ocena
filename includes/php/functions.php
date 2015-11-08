@@ -18,10 +18,7 @@ include_once("_db-config.php");
    
    // Include all necessary classes
    ev_include("/includes/php/user-service.php");
-   
-   function generateId($length) {
-      return rand(pow(10, $length-1), pow(10, $length)-1);
-   }
+   ev_include("/includes/php/student-info.php");
    
    function changeTheme($theme) {
       unset($_SESSION['theme']);
@@ -37,10 +34,11 @@ include_once("_db-config.php");
          echo "Connection failed: ". $e->getMessage();
          exit;
       }
+      $student_info = new StudentInfo();
       
-      $student_id = generateId(8);
-      $fname = "John";
-      $lname = "Doe";
+      $student_id = $student_info->generateId();
+      $fname = $student_info->firstName();
+      $lname = $student_info->lastName();
       
       session_unset();
       
