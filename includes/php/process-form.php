@@ -8,6 +8,10 @@
    	studentSignin();
 	}
 
+   if (isset($_POST['signin_teacher'])) {
+      teacherSignin();
+   }
+   
    if (isset($_POST['logout'])) {
       logout();
    }

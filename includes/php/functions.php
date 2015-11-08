@@ -48,6 +48,7 @@ include_once("_db-config.php");
       $_SESSION['f_name'] = $fname;
       $_SESSION['l_name'] = $lname;
       $_SESSION['theme'] = "red";
+      $_SERVER['rank'] = 1;
       
       $query = "INSERT INTO student (student_id, student_fname, student_lname) VALUES (:student_id, :fname, :lname)";
       $stmt = $pdo->prepare($query);
@@ -62,6 +63,56 @@ include_once("_db-config.php");
                       "lname" => $lname);*/
       $stmt->execute();
 
+      
+      $pdo = null;
+   }
+   
+      function teacherSignin() {
+      try {
+         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+      } catch (\PDOException $e) {
+         echo "Connection failed: ". $e->getMessage();
+         exit;
+      }
+      
+      $query = "SELECT COUNT(*) FROM teacher";
+      $result = $pdo->query($query);
+      $max_id = $result->fetchColumn();   
+         
+      $teacher_id = rand(1, $max_id);
+      echo $teacher_id;
+      //session_unset();
+      
+      $query = "SELECT * FROM teacher WHERE teacher_id = :teacher_id";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':teacher_id', $teacher_id, PDO::PARAM_INT);
+      $stmt->execute();
+      while ($teacher = $stmt->fetch(PDO::FETCH_ASSOC)) {
+         $_SESSION['user_id'] = $teacher['teacher_id'];
+         $_SESSION['f_name'] = $teacher['teacher_fname'];
+         $_SESSION['l_name'] = $teacher['teacher_lname'];
+         $_SESSION['rank'] = 2;
+      }
+      //$result = $result->fetchAll(PDO::FETCH_ASSOC);
+      /*
+      $query = "SELECT user_id FROM users WHERE user_id = :user_id";
+      $stmt = $pdo->prepare();
+      $params = array("user_id" => $user_id);
+      $stmt->execute($params);
+      */
+      
+      //if ($stmt->rowCount() > 0) {
+         //$teacher = $result;
+         //header('Location: ../error.php?'.$teacher['teacher_id'].'test');
+      //}
+      
+      
+      /*if ($teacher) {
+         $_SESSION['user_id'] = $teacher['teacher_id'];
+         $_SESSION['f_name'] = $teacher['teacher_fname'];
+         $_SESSION['l_name'] = $teacher['teacher_lname'];
+         $_SESSION['rank'] = 2;
+      //}*/
       
       $pdo = null;
    }
