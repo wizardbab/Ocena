@@ -13,7 +13,7 @@
       <div class="container wrapper">
          
          <div class="switch">
-            <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+            <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" name="search_check">
             <label for="cmn-toggle-4"></label>
             <div><h2>Search for: Courses</h2></div>
          </div>

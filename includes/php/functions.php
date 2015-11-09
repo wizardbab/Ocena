@@ -36,17 +36,32 @@ include_once("_db-config.php");
       }
       $student_info = new StudentInfo();
       
-      $student_id = $student_info->generateId();
+      //$student_id = $student_info->generateId();
       $fname = $student_info->firstName();
       $lname = $student_info->lastName();
       
       session_unset();
       
-      $_SESSION['user_id'] = $student_id;
-      $_SESSION['f_name'] = $fname;
-      $_SESSION['l_name'] = $lname;
-      $_SESSION['theme'] = "red";
-      $_SERVER['rank'] = 1;
+      $query = "SELECT * FROM student WHERE student_fname = :fname AND student_lname = :lname";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':fname', $fname);
+      $stmt->bindParam(':lname', $lname);
+      $stmt->execute();
+      if($stmt->fetch(PDO::FETCH_ASSOC)) {
+         while ($teacher = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $_SESSION['user_id'] = $teacher['student_id'];
+            $_SESSION['f_name'] = $teacher['student_fname'];
+            $_SESSION['l_name'] = $teacher['student_lname'];
+            $_SESSION['rank'] = 1;
+         }
+      } else {
+         $student_id = $student_info->generateId();
+         $_SESSION['user_id'] = $student_id;
+         $_SESSION['f_name'] = $fname;
+         $_SESSION['l_name'] = $lname;
+         $_SESSION['theme'] = "red";
+         $_SERVER['rank'] = 1;
+      }
       
       $query = "INSERT INTO student (student_id, student_fname, student_lname) VALUES (:student_id, :fname, :lname)";
       $stmt = $pdo->prepare($query);
@@ -121,6 +136,33 @@ include_once("_db-config.php");
          session_unset();
          header('Location: ../index.php');
       }
+   }
+   
+   function searchForTeacher($keyword) {
+      try {
+         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+      } catch (\PDOException $e) {
+         echo "Connection failed: ". $e->getMessage();
+         exit;
+      }
+   
+      $query = "SELECT teacher_fname as teacher FROM teachers WHERE teacher_fname LIKE :keyword ORDER BY teacher_fname";
+      $stmt = $pdo->prepare($query);
+      $keyword = $keyword . '%';
+      $stmt->bindParam(1, $keyword, PDO::PARAM_STR, 100);
+      $success = $stmt->execute();
+      
+      $results = array();
+      
+      if ($success) {
+         $results = $stmt->fetchAll(PDO::FETCH_COLUMN);
+      } else {
+         trigger_error('Error executing statement.', E_USER_ERROR);
+      }
+      
+      $pdo = null;
+      
+      return $results;
    }
 
 ?>

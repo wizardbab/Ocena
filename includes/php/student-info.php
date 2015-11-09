@@ -17,7 +17,7 @@ class StudentInfo {
    }
    
    public function firstName () {
-      $_male_first_names = array(
+      $_female_first_names = array(
          "Chloe","Emily","Aaliyah","Emma","Jennifer","Olivia","Hannah","Jessica","Sarah","Lily",
          "Savannah","Isabella","Sophia","Ava","Grace","Ella","Mia","Charlotte","Elizabeth","Abigail",
          "Rebecca","Samantha","Lauren","Ashley","Anna","Nicole","Zoe","Madison","Megan","Amy",
@@ -25,7 +25,7 @@ class StudentInfo {
          "Amanda","Bella","Rachel","Taylor","Alexis","Paige","Vanessa","Ellie","Lilly","Alice"
       );
 
-      $_female_first_names = array(
+      $_male_first_names = array(
          "Jacob","Shawn","Muhammad","Aaron","Daniel","Jonah","Alex","Michael","James","Ryan",
          "Lia","David","Matthew","Jack","Ethan","Luke","Jordan","Harry","Alexander","Ali",
          "Tyler","Kevin","Joshua","Dylan","Blake","Zayn","Andrew","Christopher","Joseph","John",
@@ -35,7 +35,7 @@ class StudentInfo {
       
       $_first_names = array_merge($_male_first_names, $_female_first_names);
       
-      $index = rand(0, 99);
+      $index = rand(0, count($_first_names) - 1);
       
       return $_first_names[$index];
    }
@@ -53,7 +53,7 @@ class StudentInfo {
       "Reye","Cruz","Hughes","Price","Myers","Long","Foster","Sanders","Ross","Morales","Powell",
       "Sullivan","Russell","Ortiz","Jenkins","Gutierrez","Perry","Butler","Barnes","Fisher"
    );
-      $index = rand(0, 99);
+      $index = rand(0, count($_last_names) - 1);
 
       return $_last_names[$index];
    }

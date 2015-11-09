@@ -10,6 +10,7 @@
 ?>
 
 <script src="/includes/js/jquery.js" type="text/javascript"></script>
+<script src="/includes/js/_commonScripts.js" type="text/javascript"></script>
 
 <meta charset="UTF-8">
 
