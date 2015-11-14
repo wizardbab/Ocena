@@ -78,7 +78,7 @@ a:focus {
 
 .dropdown-menu {
    background-color: #FF534F;
-   width: 100%;
+   width: inherit;
    min-width: 300px;
 }
 
@@ -108,6 +108,7 @@ a:focus {
 .plus-glyph {
    color: #FF534F;
    float: right;
+   margin-top: -11px;
    font-size: 32px;
    transform: translateY(12%)
 }
@@ -327,6 +328,8 @@ input {
 }
 
 .search input:focus + .results { display: block }
+
+.results:active {display: block; }
 
 .search .results {
     display: none;

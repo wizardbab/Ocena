@@ -3,7 +3,7 @@
 	/*if(isset($_POST['login'])) {
 		userLogin($_POST['username'], $_POST['password']);
 	}*/
-	
+		
 	if (isset($_POST['signin_student'])) {
    	studentSignin();
 	}
@@ -12,6 +12,14 @@
       teacherSignin();
    }
    
+   if (isset($_POST['rate_teacher'])) {
+      rateTeacher($_SESSION['user_id'], $_POST['teacher_id'], $_POST['like'], $_POST['rating_comment']);
+   }
+   
+   if (isset($_POST['rate_course'])) {
+      rateCourse($_SESSION['user_id'], $_POST['course_id'], $_POST['like'], $_POST['rating_comment']);
+   }
+
    if (isset($_POST['logout'])) {
       logout();
    }
@@ -35,5 +43,4 @@
    if (isset($_POST['pink'])) {
       changeTheme("pink");
    }
-
 ?>

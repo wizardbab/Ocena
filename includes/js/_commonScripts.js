@@ -1,3 +1,5 @@
+var MIN_LENGTH = 1;
+
 $('#cmn-toggle-4').click(function() {
   if ($(this).is(':checked')) {
     $(this).siblings('div').html('<h2>Search for: Teachers</h2>');
@@ -9,9 +11,8 @@ $('#cmn-toggle-4').click(function() {
 });
 
 function searchTeachers() {
-   var min_length = 0;
    var keyword = $('#ev_search').val();
-   if (keyword.length    >= min_length) {
+   if (keyword.length    >= MIN_LENGTH) {
       $.ajax( {
          url: '/includes/php/auto-complete-t.php',
          type: 'POST',
@@ -27,9 +28,8 @@ function searchTeachers() {
 };
 
 function searchCourses() {
-   var min_length = 0;
    var keyword = $('#ev_search').val();
-   if (keyword.length    >= min_length) {
+   if (keyword.length    >= MIN_LENGTH) {
       $.ajax( {
          url: '/includes/php/auto-complete-c.php',
          type: 'POST',

@@ -16,11 +16,9 @@ $stmt->execute();
 
 $list = $stmt->fetchAll();
 
-foreach ($list as $rs) {
-	// put in bold the written text
-	$teacher_name = $rs['teacher_fname']. " " .$rs['teacher_lname'];
+foreach ($list as $result) {
+	$teacher_name = $result['teacher_fname']. " " .$result['teacher_lname'];
 	$teacher_name = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $teacher_name);
-	// add new option
-    echo '<li onclick="set_item(\''.str_replace("'", "\'", $rs['teacher_fname']).'\')"><a href="#">'.$teacher_name.'<span class="glyphicon glyphicon-circle-arrow-right pull-right dropdown-glyph"></span><br /><span>'.$rs['teacher_office'].'</span></a></li>';
+    echo '<li onclick="set_item(\''.str_replace("'", "\'", $result['teacher_fname']).'\')"><a href="#">'.$teacher_name.'<span class="glyphicon glyphicon-circle-arrow-right pull-right dropdown-glyph"></span><br /><span>'.$result['teacher_office'].'</span></a></li>';
 }
 ?>

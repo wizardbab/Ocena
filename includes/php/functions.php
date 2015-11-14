@@ -48,10 +48,11 @@ include_once("_db-config.php");
       $stmt->bindParam(':lname', $lname);
       $stmt->execute();
       if($stmt->fetch(PDO::FETCH_ASSOC)) {
-         while ($teacher = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $_SESSION['user_id'] = $teacher['student_id'];
-            $_SESSION['f_name'] = $teacher['student_fname'];
-            $_SESSION['l_name'] = $teacher['student_lname'];
+         while ($student = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $_SESSION['user_id'] = $student['student_id'];
+            $_SESSION['f_name'] = $student['student_fname'];
+            $_SESSION['l_name'] = $student['student_lname'];
+            $_SESSION['theme'] = "red";
             $_SESSION['rank'] = 1;
          }
       } else {
@@ -61,40 +62,39 @@ include_once("_db-config.php");
          $_SESSION['l_name'] = $lname;
          $_SESSION['theme'] = "red";
          $_SERVER['rank'] = 1;
-      }
       
-      $query = "INSERT INTO student (student_id, student_fname, student_lname) VALUES (:student_id, :fname, :lname)";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(':student_id', $student_id, PDO::PARAM_INT);
-      $stmt->bindParam(':fname', $fname);
-      $stmt->bindParam(':lname', $lname);
-         /*foreach ($params as $key => &$val) {
-             $stmt->bindParam($key, $val);
-         }
-      /*$params = array("user_id" => $user_id,
-                      "fname" => $fname,
-                      "lname" => $lname);*/
-      $stmt->execute();
-
+      
+         $query = "INSERT INTO student (student_id, student_fname, student_lname) VALUES (:student_id, :fname, :lname)";
+         $stmt = $pdo->prepare($query);
+         $stmt->bindParam(':student_id', $student_id, PDO::PARAM_INT);
+         $stmt->bindParam(':fname', $fname);
+         $stmt->bindParam(':lname', $lname);
+         $stmt->execute();
+         
+         $course_id = rand(1,3);
+         
+         $query = "INSERT INTO enroll (enroll_student_id, enroll_class_id) VALUES (:student_id, :course_id)";
+         $stmt = $pdo->prepare($query);
+         $stmt->bindParam(':student_id', $student_id);
+         $stmt->bindParam(':course_id', $course_id);
+         $stmt->execute();
+      }
       
       $pdo = null;
    }
    
-      function teacherSignin() {
-      try {
-         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+   function teacherSignin() {
+               try {
+      $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
       } catch (\PDOException $e) {
          echo "Connection failed: ". $e->getMessage();
          exit;
       }
-      
       $query = "SELECT COUNT(*) FROM teacher";
       $result = $pdo->query($query);
       $max_id = $result->fetchColumn();   
          
       $teacher_id = rand(1, $max_id);
-      echo $teacher_id;
-      //session_unset();
       
       $query = "SELECT * FROM teacher WHERE teacher_id = :teacher_id";
       $stmt = $pdo->prepare($query);
@@ -106,26 +106,6 @@ include_once("_db-config.php");
          $_SESSION['l_name'] = $teacher['teacher_lname'];
          $_SESSION['rank'] = 2;
       }
-      //$result = $result->fetchAll(PDO::FETCH_ASSOC);
-      /*
-      $query = "SELECT user_id FROM users WHERE user_id = :user_id";
-      $stmt = $pdo->prepare();
-      $params = array("user_id" => $user_id);
-      $stmt->execute($params);
-      */
-      
-      //if ($stmt->rowCount() > 0) {
-         //$teacher = $result;
-         //header('Location: ../error.php?'.$teacher['teacher_id'].'test');
-      //}
-      
-      
-      /*if ($teacher) {
-         $_SESSION['user_id'] = $teacher['teacher_id'];
-         $_SESSION['f_name'] = $teacher['teacher_fname'];
-         $_SESSION['l_name'] = $teacher['teacher_lname'];
-         $_SESSION['rank'] = 2;
-      //}*/
       
       $pdo = null;
    }
@@ -136,33 +116,105 @@ include_once("_db-config.php");
          session_unset();
          header('Location: ../index.php');
       }
+   } 
+   // Smart GET function
+   function GET($name=NULL, $value=false, $option="default")
+   {
+    $option=false; // Old version depricated part
+    $content=(!empty($_GET[$name]) ? trim($_GET[$name]) : (!empty($value) && !is_array($value) ? trim($value) : false));
+    if(is_numeric($content))
+        return preg_replace("@([^0-9])@Ui", "", $content);
+    else if(is_bool($content))
+        return ($content?true:false);
+    else if(is_float($content))
+        return preg_replace("@([^0-9\,\.\+\-])@Ui", "", $content);
+    else if(is_string($content))
+    {
+        if(filter_var ($content, FILTER_VALIDATE_URL))
+            return $content;
+        else if(filter_var ($content, FILTER_VALIDATE_EMAIL))
+            return $content;
+        else if(filter_var ($content, FILTER_VALIDATE_IP))
+            return $content;
+        else if(filter_var ($content, FILTER_VALIDATE_FLOAT))
+            return $content;
+        else
+            return preg_replace("@([^a-zA-Z0-9\+\-\_\*\@\$\!\;\.\?\#\:\=\%\/\ ]+)@Ui", "", $content);
+    }
+    else false;
    }
    
-   function searchForTeacher($keyword) {
+   function getTeacherInfo($id) {
       try {
          $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
       } catch (\PDOException $e) {
          echo "Connection failed: ". $e->getMessage();
          exit;
       }
+
+      $query = "SELECT * FROM teacher WHERE teacher_id = :teacher_id";
+      $stmt  = $pdo->prepare($query);
+      $stmt->bindParam(':teacher_id', $id);
+      $stmt->execute();
+                  
+      $teacher_list = $stmt->fetchAll();
+      
+      foreach ($teacher_list as $result) {
+         return $result;
+      }
+   }
    
-      $query = "SELECT teacher_fname as teacher FROM teachers WHERE teacher_fname LIKE :keyword ORDER BY teacher_fname";
-      $stmt = $pdo->prepare($query);
-      $keyword = $keyword . '%';
-      $stmt->bindParam(1, $keyword, PDO::PARAM_STR, 100);
-      $success = $stmt->execute();
-      
-      $results = array();
-      
-      if ($success) {
-         $results = $stmt->fetchAll(PDO::FETCH_COLUMN);
-      } else {
-         trigger_error('Error executing statement.', E_USER_ERROR);
+   function rateTeacher($s_id, $t_id, $rate, $comment) {
+      try {
+         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+      } catch (\PDOException $e) {
+         echo "Connection failed: ". $e->getMessage();
+         exit;
       }
       
-      $pdo = null;
-      
-      return $results;
+      $query = "INSERT INTO teacher_rating (teacher_id, student_id, rating, comment) VALUES (:t_id, :s_id, :rate, :comment)";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':t_id', $t_id);
+      $stmt->bindParam(':s_id', $s_id);
+      $stmt->bindParam(':rate', $rate);
+      $stmt->bindParam(':comment', $comment);
+      $stmt->execute();
    }
+   
+   function getCourseInfo($id) {
+      try {
+         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+      } catch (\PDOException $e) {
+         echo "Connection failed: ". $e->getMessage();
+         exit;
+      }
 
+      $query = "SELECT * FROM course WHERE course_id = :course_id";
+      $stmt  = $pdo->prepare($query);
+      $stmt->bindParam(':course_id', $id);
+      $stmt->execute();
+                  
+      $teacher_list = $stmt->fetchAll();
+      
+      foreach ($teacher_list as $result) {
+         return $result;
+      }
+   }
+   
+   function rateCourse($s_id, $c_id, $rate, $comment) {
+      try {
+         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+      } catch (\PDOException $e) {
+         echo "Connection failed: ". $e->getMessage();
+         exit;
+      }
+      
+      $query = "INSERT INTO class_rating_new (class_id, student_id, rating, comment) VALUES (:c_id, :s_id, :rate, :comment)";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':c_id', $c_id);
+      $stmt->bindParam(':s_id', $s_id);
+      $stmt->bindParam(':rate', $rate);
+      $stmt->bindParam(':comment', $comment);
+      $stmt->execute();
+   }
 ?>
