@@ -290,6 +290,11 @@ input.cmn-toggle-round-flat:checked + label:after {
     background: #D04542;
 }
 
+input[type="range"] {
+   display: inline;
+   width: 85%;
+}
+
 /* Search Box styles */
 .main-search { 
    margin-top: 50px;
@@ -329,7 +334,7 @@ input {
 
 .search input:focus + .results { display: block }
 
-.results:active {display: block; }
+.search .results:active, .search .results:focus {display: block; }
 
 .search .results {
     display: none;

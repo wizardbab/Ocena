@@ -144,23 +144,46 @@ include_once("_db-config.php");
     else false;
    }
    
-   function getTeacherInfo($id) {
+   function getRatingInfo($id, $type) {
       try {
          $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
       } catch (\PDOException $e) {
          echo "Connection failed: ". $e->getMessage();
          exit;
       }
-
-      $query = "SELECT * FROM teacher WHERE teacher_id = :teacher_id";
-      $stmt  = $pdo->prepare($query);
-      $stmt->bindParam(':teacher_id', $id);
-      $stmt->execute();
-                  
-      $teacher_list = $stmt->fetchAll();
       
-      foreach ($teacher_list as $result) {
-         return $result;
+      $query = "SELECT * FROM class WHERE class_id = :class_id";
+      $stmt  = $pdo->prepare($query);
+      $stmt->bindParam(':class_id', $id);
+      $stmt->execute();
+      
+      $class_list = $stmt->fetchAll();
+      foreach ($class_list as $class_results) {
+         if ($type == "course") {
+            $query = "SELECT * FROM course WHERE course_id = :class_course_id";
+            $stmt  = $pdo->prepare($query);
+            $stmt->bindParam(':class_course_id', $class_results['class_course_id']);
+            $stmt->execute();
+            
+            $course_list = $stmt->fetchAll();
+            
+            foreach ($course_list as $i) {
+               return $i;
+            }
+            
+         }
+         if ($type == "teacher") {
+            $query = "SELECT * FROM teacher WHERE teacher_id = :class_teacher_id";
+            $stmt  = $pdo->prepare($query);
+            $stmt->bindParam(':class_teacher_id', $class_results['class_teacher_id']);
+            $stmt->execute(); 
+            
+            $teacher_list = $stmt->fetchAll();
+            
+            foreach ($teacher_list as $i) {
+               return $i;
+            }
+         }
       }
    }
    
@@ -181,7 +204,7 @@ include_once("_db-config.php");
       $stmt->execute();
    }
    
-   function getCourseInfo($id) {
+   function getCourseRating($id) {
       try {
          $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
       } catch (\PDOException $e) {
@@ -189,16 +212,42 @@ include_once("_db-config.php");
          exit;
       }
 
-      $query = "SELECT * FROM course WHERE course_id = :course_id";
+      $query = "SELECT * FROM class_rating_new WHERE class_id = :course_id";
       $stmt  = $pdo->prepare($query);
       $stmt->bindParam(':course_id', $id);
       $stmt->execute();
                   
-      $teacher_list = $stmt->fetchAll();
-      
-      foreach ($teacher_list as $result) {
-         return $result;
+      $class_ratings = $stmt->fetchAll();
+      $total_count = 0;
+      foreach ($class_ratings as $result) {
+         $total_rating += $result['rating'];
+         $total_count += 1;
       }
+      
+      return $total_rating / $total_count;
+   }
+   
+   function getTeacherRating($id) {
+      try {
+         $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+      } catch (\PDOException $e) {
+         echo "Connection failed: ". $e->getMessage();
+         exit;
+      }
+
+      $query = "SELECT * FROM teacher_rating WHERE teacher_id = :teacher_id";
+      $stmt  = $pdo->prepare($query);
+      $stmt->bindParam(':teacher_id', $id);
+      $stmt->execute();
+                  
+      $teacher_ratings = $stmt->fetchAll();
+      $total_count = 0;
+      foreach ($teacher_ratings as $result) {
+         $total_rating += $result['rating'];
+         $total_count += 1;
+      }
+      
+      return $total_rating / $total_count;
    }
    
    function rateCourse($s_id, $c_id, $rate, $comment) {

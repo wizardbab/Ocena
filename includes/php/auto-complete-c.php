@@ -18,6 +18,6 @@ include_once("_db-config.php");
    
    foreach ($list as $result) {
    	$course_name = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $result['course_name']);
-       echo '<li onclick="set_item(\''.str_replace("'", "\'", $result['course_name']).'\')"><a href="error.php">'.$course_name.'<span class="glyphicon glyphicon-circle-arrow-right pull-right dropdown-glyph"></span><br /><span>'.$result['course_label'].'</span></a></li>';
+       echo '<li onclick="set_item(\''.str_replace("'", "\'", $result['course_name']).'\')"><a href="course-profile.php?id='.$result['course_id'].'">'.$course_name.'<span class="glyphicon glyphicon-circle-arrow-right pull-right dropdown-glyph"></span><br /><span>'.$result['course_label'].'</span></a></li>';
    }
 ?>

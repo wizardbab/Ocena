@@ -20,7 +20,6 @@
       
       $enroll_list = $stmt->fetchAll();
       foreach ($enroll_list as $enroll_result) {
-         //echo $enroll_result['enroll_class_id'];
       
          $query = "SELECT * FROM class WHERE class_id = :enroll_class_id";
          $stmt = $pdo->prepare($query);
@@ -28,35 +27,35 @@
          $stmt->execute();
          
          $class_list = $stmt->fetchAll();
-         //$class_list['class_teacher_id'];
          
          foreach ($class_list as $class_result) {
-               echo '<li>
-                        <a href="course-rating.php?id='.$class_result['class_id'].'">
-                        <h3>'.$class_result['class_name'].'</h3>
-                      </a>
-                     </li>';
-         }
-            
-         //foreach ($class_list as $class_result) {
-            //echo $class_result['class_teacher_id'];
-            
-            $query = "SELECT * FROM teacher WHERE teacher_id = :class_teacher_id";
+            $query = "SELECT * FROM course WHERE course_id = :class_course_id";
             $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':class_teacher_id', $class_result['class_teacher_id']);
+            $stmt->bindParam(':class_course_id', $class_result['class_course_id']);
             $stmt->execute();
             
-            $teacher_list = $stmt->fetchAll();
-      
-      
-            foreach ($teacher_list as $result) {
+            $course_list = $stmt->fetchAll();
+            
+            foreach ($course_list as $course_result) {
                echo '<li>
-                        <a href="teacher-rating.php?id='.$result['teacher_id'].'">
-                        <h3>'.$result['teacher_fname'].' '.$result['teacher_lname'].'</h3>
-                      </a>
+                  <a href="rating.php?id='.$class_result['class_id'].'">
+                  <h3>'.$course_result['course_name'].'</h3>';
+                        
+               $query = "SELECT * FROM teacher WHERE teacher_id = :class_teacher_id";
+               $stmt = $pdo->prepare($query);
+               $stmt->bindParam(':class_teacher_id', $class_result['class_teacher_id']);
+               $stmt->execute();
+               
+               $teacher_list = $stmt->fetchAll();
+            
+               foreach ($teacher_list as $teacher_result) {
+                     echo '<h4>'.$teacher_result['teacher_fname'].' '.$teacher_result['teacher_lname'].'</h4>';
+               }
+               
+               echo '</a>
                      </li>';
             }
-         //}
+         }
       }
       echo '</ul></li>';
       $pdo = null;
