@@ -201,9 +201,10 @@ include_once("_db-config.php");
             }
          }
          if ($type == "teacher_rating") {
-            $query = "SELECT * FROM teacher_rating WHERE student_id = :student_id AND teacher_rating_active = 1";
+            $query = "SELECT * FROM teacher_rating WHERE student_id = :student_id AND teacher_rating_active = 1 AND teacher_id = :class_teacher_id";
             $stmt  = $pdo->prepare($query);
             $stmt->bindParam(':student_id', $_SESSION['user_id']);
+            $stmt->bindParam(':class_teacher_id', $class_results['class_teacher_id']);
             $stmt->execute(); 
             
             $teacher_list = $stmt->fetchAll();
@@ -213,9 +214,10 @@ include_once("_db-config.php");
             }
          }
          if ($type == "course_rating") {
-            $query = "SELECT * FROM course_rating WHERE student_id = :student_id AND course_rating_active = 1";
+            $query = "SELECT * FROM course_rating WHERE student_id = :student_id AND course_rating_active = 1 AND course_id = :class_course_id";
             $stmt  = $pdo->prepare($query);
             $stmt->bindParam(':student_id', $_SESSION['user_id']);
+            $stmt->bindParam(':class_course_id', $class_results['class_course_id']);
             $stmt->execute(); 
             
             $teacher_list = $stmt->fetchAll();
@@ -235,15 +237,18 @@ include_once("_db-config.php");
          exit;
       }
       
+      $comment = htmlentities($comment);
+      
       $query = "SELECT * FROM teacher_rating WHERE student_id=:student_id";
       $stmt = $pdo->prepare($query);
       $stmt->bindParam(':student_id', $_SESSION['user_id']);
       $stmt->execute();
       
       if($stmt->fetch(PDO::FETCH_ASSOC)) {
-         $query = "UPDATE teacher_rating SET teacher_rating_active = 0 WHERE student_id = :student_id";
+         $query = "UPDATE teacher_rating SET teacher_rating_active = 0 WHERE student_id = :student_id AND teacher_id = :t_id";
          $stmt = $pdo->prepare($query);
          $stmt->bindParam(':student_id', $_SESSION['user_id']);
+         $stmt->bindParam(':t_id', $t_id);
          $stmt->execute();
       }
 
@@ -311,15 +316,18 @@ include_once("_db-config.php");
          exit;
       }
       
+      $comment = htmlentities($comment);
+      
       $query = "SELECT * FROM course_rating WHERE student_id=:student_id";
       $stmt = $pdo->prepare($query);
       $stmt->bindParam(':student_id', $_SESSION['user_id']);
       $stmt->execute();
       
       if($stmt->fetch(PDO::FETCH_ASSOC)) {
-         $query = "UPDATE course_rating SET course_rating_active = 0 WHERE student_id = :student_id";
+         $query = "UPDATE course_rating SET course_rating_active = 0 WHERE student_id = :student_id AND course_id = :c_id";
          $stmt = $pdo->prepare($query);
          $stmt->bindParam(':student_id', $_SESSION['user_id']);
+         $stmt->bindParam(':c_id', $c_id);
          $stmt->execute();
       }
       
