@@ -12,12 +12,12 @@
       teacherSignin();
    }
    
-   if (isset($_POST['rate_teacher'])) {
-      rateTeacher($_SESSION['user_id'], $_POST['teacher_id'], $_POST['like'], $_POST['rating_comment']);
+   if (isset($_POST['rate_course'])) {
+      rateCourse($_SESSION['user_id'], $_POST['course_id'], $_POST['like'], $_POST['rating_comment'], $_POST['course_teacher_id']);
    }
    
-   if (isset($_POST['rate_course'])) {
-      rateCourse($_SESSION['user_id'], $_POST['course_id'], $_POST['like'], $_POST['rating_comment']);
+   if (isset($_POST['rate_teacher'])) {
+      rateTeacher($_SESSION['user_id'], $_POST['teacher_id'], $_POST['like'], $_POST['rating_comment'], $_POST['teacher_course_id']);
    }
 
    if (isset($_POST['logout'])) {

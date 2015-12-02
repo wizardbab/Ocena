@@ -20,5 +20,7 @@ foreach ($list as $result) {
 	$teacher_name = $result['teacher_fname']. " " .$result['teacher_lname'];
 	$teacher_name = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $teacher_name);
     echo '<li onclick="set_item(\''.str_replace("'", "\'", $result['teacher_fname']).'\')"><a href="teacher-profile.php?id='.$result['teacher_id'].'">'.$teacher_name.'<span class="glyphicon glyphicon-circle-arrow-right pull-right dropdown-glyph"></span><br /><span>'.$result['teacher_office'].'</span></a></li>';
+    
+    $pdo = null;
 }
 ?>

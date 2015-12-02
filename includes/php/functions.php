@@ -71,13 +71,29 @@ include_once("_db-config.php");
          $stmt->bindParam(':lname', $lname);
          $stmt->execute();
          
-         $course_id = rand(1,3);
-         
-         $query = "INSERT INTO enroll (enroll_student_id, enroll_class_id) VALUES (:student_id, :course_id)";
+         //$course_id = rand(1,3);
+         $query = "SELECT * FROM class"; // This part can just be replaced with a COUNT function
          $stmt = $pdo->prepare($query);
-         $stmt->bindParam(':student_id', $student_id);
-         $stmt->bindParam(':course_id', $course_id);
          $stmt->execute();
+         $num_classes = $stmt->rowCount();
+         
+         $classes_enrolled = array();
+         
+         $classes_enrolled[0] = rand(1,3);
+         
+         while (($i = rand(1,3)) == $classes_enrolled[0]);
+         $classes_enrolled[1] = $i;
+         
+         while (($i = rand(1,3)) == $classes_enrolled[0] || $i == $classes_enrolled[1]);
+         $classes_enrolled[2] = $i;
+                  
+         for ($i = 0; $i < 3; $i++) {
+           $query = "INSERT INTO enroll (enroll_student_id, enroll_class_id) VALUES (:student_id, :course_id)";
+           $stmt = $pdo->prepare($query);
+           $stmt->bindParam(':student_id', $student_id);
+           $stmt->bindParam(':course_id', $classes_enrolled[$i]);
+           $stmt->execute();
+         }
       }
       
       $pdo = null;
@@ -184,10 +200,34 @@ include_once("_db-config.php");
                return $i;
             }
          }
+         if ($type == "teacher_rating") {
+            $query = "SELECT * FROM teacher_rating WHERE student_id = :student_id AND teacher_rating_active = 1";
+            $stmt  = $pdo->prepare($query);
+            $stmt->bindParam(':student_id', $_SESSION['user_id']);
+            $stmt->execute(); 
+            
+            $teacher_list = $stmt->fetchAll();
+            
+            foreach ($teacher_list as $i) {
+               return $i;
+            }
+         }
+         if ($type == "course_rating") {
+            $query = "SELECT * FROM course_rating WHERE student_id = :student_id AND course_rating_active = 1";
+            $stmt  = $pdo->prepare($query);
+            $stmt->bindParam(':student_id', $_SESSION['user_id']);
+            $stmt->execute(); 
+            
+            $teacher_list = $stmt->fetchAll();
+            
+            foreach ($teacher_list as $i) {
+               return $i;
+            }
+         }
       }
    }
    
-   function rateTeacher($s_id, $t_id, $rate, $comment) {
+   function rateTeacher($s_id, $t_id, $rate, $comment, $tc_id) {
       try {
          $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
       } catch (\PDOException $e) {
@@ -195,12 +235,25 @@ include_once("_db-config.php");
          exit;
       }
       
-      $query = "INSERT INTO teacher_rating (teacher_id, student_id, rating, comment) VALUES (:t_id, :s_id, :rate, :comment)";
+      $query = "SELECT * FROM teacher_rating WHERE student_id=:student_id";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':student_id', $_SESSION['user_id']);
+      $stmt->execute();
+      
+      if($stmt->fetch(PDO::FETCH_ASSOC)) {
+         $query = "UPDATE teacher_rating SET teacher_rating_active = 0 WHERE student_id = :student_id";
+         $stmt = $pdo->prepare($query);
+         $stmt->bindParam(':student_id', $_SESSION['user_id']);
+         $stmt->execute();
+      }
+
+      $query = "INSERT INTO teacher_rating (teacher_id, student_id, rating, comment, teacher_course_id) VALUES (:t_id, :s_id, :rate, :comment, :tc_id)";
       $stmt = $pdo->prepare($query);
       $stmt->bindParam(':t_id', $t_id);
       $stmt->bindParam(':s_id', $s_id);
       $stmt->bindParam(':rate', $rate);
       $stmt->bindParam(':comment', $comment);
+      $stmt->bindParam(':tc_id', $tc_id);
       $stmt->execute();
    }
    
@@ -212,7 +265,7 @@ include_once("_db-config.php");
          exit;
       }
 
-      $query = "SELECT * FROM class_rating_new WHERE class_id = :course_id";
+      $query = "SELECT * FROM course_rating WHERE class_id = :course_id AND course_rating_active = 1";
       $stmt  = $pdo->prepare($query);
       $stmt->bindParam(':course_id', $id);
       $stmt->execute();
@@ -235,7 +288,7 @@ include_once("_db-config.php");
          exit;
       }
 
-      $query = "SELECT * FROM teacher_rating WHERE teacher_id = :teacher_id";
+      $query = "SELECT * FROM teacher_rating WHERE teacher_id = :teacher_id AND teacher_rating_active = 1";
       $stmt  = $pdo->prepare($query);
       $stmt->bindParam(':teacher_id', $id);
       $stmt->execute();
@@ -250,7 +303,7 @@ include_once("_db-config.php");
       return $total_rating / $total_count;
    }
    
-   function rateCourse($s_id, $c_id, $rate, $comment) {
+   function rateCourse($s_id, $c_id, $rate, $comment, $ct_id) {
       try {
          $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
       } catch (\PDOException $e) {
@@ -258,12 +311,25 @@ include_once("_db-config.php");
          exit;
       }
       
-      $query = "INSERT INTO class_rating_new (class_id, student_id, rating, comment) VALUES (:c_id, :s_id, :rate, :comment)";
+      $query = "SELECT * FROM course_rating WHERE student_id=:student_id";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':student_id', $_SESSION['user_id']);
+      $stmt->execute();
+      
+      if($stmt->fetch(PDO::FETCH_ASSOC)) {
+         $query = "UPDATE course_rating SET course_rating_active = 0 WHERE student_id = :student_id";
+         $stmt = $pdo->prepare($query);
+         $stmt->bindParam(':student_id', $_SESSION['user_id']);
+         $stmt->execute();
+      }
+      
+      $query = "INSERT INTO course_rating (class_id, student_id, rating, comment, course_teacher_id) VALUES (:c_id, :s_id, :rate, :comment, :t_id)";
       $stmt = $pdo->prepare($query);
       $stmt->bindParam(':c_id', $c_id);
       $stmt->bindParam(':s_id', $s_id);
       $stmt->bindParam(':rate', $rate);
       $stmt->bindParam(':comment', $comment);
+      $stmt->bindParam(':t_id', $ct_id);
       $stmt->execute();
    }
 ?>
