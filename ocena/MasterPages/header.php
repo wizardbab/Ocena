@@ -11,7 +11,6 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#" data-toggle="modal" data-target="#about">About</a></li>
             <li><a href="#" data-toggle="modal" data-target="#faq">FAQ</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

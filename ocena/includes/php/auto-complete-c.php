@@ -1,12 +1,13 @@
 <?php
-include_once("_db-config.php");
+// include_once("_db-config.php");
 
-   try {
-      $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
-   } catch (\PDOException $e) {
-      echo "Connection failed: ". $e->getMessage();
-      exit;
-   }
+//    try {
+//       $pdo = new PDO(DB_PDODRIVER .':host='. DB_HOST .';dbname='. DB_NAME .'', DB_USER, DB_PASS);
+//    } catch (\PDOException $e) {
+//       echo "Connection failed: ". $e->getMessage();
+//       exit;
+//    }
+   include("functions.php");
 
    $keyword = '%'.$_POST['keyword'].'%';
    $query = "SELECT * FROM course WHERE (course_name LIKE (:keyword)) OR (course_label LIKE (:keyword)) ORDER BY course_name ASC LIMIT 0, 10";

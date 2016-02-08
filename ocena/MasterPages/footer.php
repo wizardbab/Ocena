@@ -12,8 +12,8 @@
             <?php ev_include("/includes/content/modals/settings.php"); ?>
          </div>
          
-<script src="/includes/js/bootstrap-tagsinput.min.js"></script>
-<script src="/includes/js/lazyload.js"></script>
-<script src="/includes/js/bootstrap-slider.js"></script>
-<script src="/includes/js/_commonScripts.js"></script>
+<script src="/includes/js/jquery.js" type="text/javascript"></script>
+<script src="/includes/js/jquery.easing.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="/includes/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/includes/js/bootstrap-slider.js"></script>
+<script src="/includes/js/_commonScripts.js"></script>

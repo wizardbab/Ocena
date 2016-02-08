@@ -3,37 +3,37 @@
 .navbar-default .navbar-nav>.active>a:focus, 
 .navbar-default .navbar-nav>.active>a:active, 
 .navbar-default .navbar-nav>.active>a:hover {
-   border-bottom: 1px solid #A34FFF;
+   border-bottom: 1px solid #27AE60;
 }
 
 #progressbar li.active:before,  #progressbar li.active:after{
-	background: #A34FFF;
+	background: #27AE60;
 }
 
 .slider .slider-handle {
-   background: #A34FFF;
+   background: #27AE60;
 }
 
 #submit-button,
 .action-button,
 #msform .action-button {
-	background: #A34FFF;
+	background: #27AE60;
 }
 
 #submit-button:hover, #submit-button:focus,
 .action-button:hover, .action-button:focus,
 #msform .action-button:hover, #msform .action-button:focus {
-	box-shadow: 0 0 0 2px white, 0 0 0 3px #A34FFF;
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
 }
 
 label {
-   background: #AE98C3;
+   background: #98C3A0;
 }
 
 input[type="checkbox"]:checked + label {
-   background: #967BA7;
+   background: #7BA783;
 }
 
 .search .results a:hover {
-   background-color: #A34FFF;
+   background-color: #27AE60;
 }

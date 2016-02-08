@@ -5,42 +5,41 @@
 	}*/
 		
 	if (isset($_POST['signin_student'])) {
-   	studentSignin();
+   	studentSignin($pdo);
 	}
 
    if (isset($_POST['signin_teacher'])) {
-      teacherSignin();
+      teacherSignin($pdo);
    }
    
-   if (isset($_POST['rate_course'])) {
-      rateCourse($_SESSION['user_id'], $_POST['course_id'], $_POST['like'], $_POST['rating_comment'], $_POST['course_teacher_id']);
-   }
-   
-   if (isset($_POST['rate_teacher'])) {
-      rateTeacher($_SESSION['user_id'], $_POST['teacher_id'], $_POST['like'], $_POST['rating_comment'], $_POST['teacher_course_id']);
+   if (isset($_POST['submit_ratings'])) {
+      submitRatings($pdo, $_SESSION['user_id'], $_POST['course_id'],  $_POST['teacher_id'], 
+              $_POST['course_teacher_id'], $_POST['teacher_course_id'], $_POST['t_general'],  $_POST['c_general'], 
+              $_POST['t_q1'], $_POST['t_q2'], $_POST['t_q3'], $_POST['t_q4'], $_POST['t_q5'], $_POST['teacher_comment'], 
+              $_POST['c_q1'], $_POST['c_q2'], $_POST['c_q3'], $_POST['c_q4'], $_POST['c_q5'], $_POST['course_comment']);
    }
 
    if (isset($_POST['logout'])) {
       logout();
    }
    
-   if (isset($_POST['red'])) {
+   if (isset($_POST['red-theme'])) {
       changeTheme("red");
    }
    
-   if (isset($_POST['blue'])) {
+   if (isset($_POST['blue-theme'])) {
       changeTheme("blue");
    }
    
-   if (isset($_POST['orange'])) {
+   if (isset($_POST['orange-theme'])) {
       changeTheme("orange");
    }
    
-   if (isset($_POST['purple'])) {
+   if (isset($_POST['purple-theme'])) {
       changeTheme("purple");
    }
    
-   if (isset($_POST['pink'])) {
+   if (isset($_POST['green-theme'])) {
       changeTheme("pink");
    }
 ?>

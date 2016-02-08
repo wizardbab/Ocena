@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Settings</h4>
               </div>
               <div class="modal-body">
-                  <div class="form-style-6">
+                  <div>
                      <?php 
                         ev_include("/includes/content/forms/settings.php");
                      ?>

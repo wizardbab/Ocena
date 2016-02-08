@@ -1,7 +1,4 @@
 <form method="post" action="/">
-   <input type="submit" class="" name="signin_student" value="Sign in as a Student" />
-   <br /><br />
-   <input type="submit" class="" name="signin_teacher" value="Sign in as Teacher" />
-   <br /><br />
-   <input type="submit" class="" name="signin_dean" value="Sign in as Dean"  href="index.html"/>
+   <input type="submit" class="action-button login-button" name="signin_student" value="Student Sign-in" />
+   <input type="submit" class="action-button login-button" name="signin_teacher" value="Teacher Sign-in" />
 </form>
