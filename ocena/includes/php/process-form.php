@@ -40,6 +40,6 @@
    }
    
    if (isset($_POST['green-theme'])) {
-      changeTheme("pink");
+      changeTheme("green");
    }
 ?>

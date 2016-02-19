@@ -34,14 +34,27 @@
             $stmt->bindParam(':id', $rating['id']);
             $stmt->execute();
             
-            if ($t_or_c == 1) {
+            if ($t_or_c == 'c') {
                $query = "UPDATE course_rating SET vote_count = vote_count + 2 WHERE rating_id = :rating_id";
                $stmt = $pdo->prepare($query);
                $stmt->bindParam(':rating_id', $rating_id);
                $stmt->execute();
-            } else if ($t_or_c == 0) {
+            } else if ($t_or_c == 't') {
                
             }
+         } else if ($rating['vote'] == 1) {
+            $query = "UPDATE votes SET vote = 0 WHERE id = :id";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':id', $rating['id']);
+            $stmt->execute();
+               if ($t_or_c == 'c') {
+                  $query = "UPDATE course_rating SET vote_count = vote_count - 1 WHERE rating_id = :rating_id";
+                  $stmt = $pdo->prepare($query);
+                  $stmt->bindParam(':rating_id', $rating_id);
+                  $stmt->execute();
+               } else if ($t_or_c == 't') {
+                  
+               }
          }
       }
    } else {

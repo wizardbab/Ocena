@@ -1,9 +1,13 @@
 <?php 
    include_once($_SERVER['DOCUMENT_ROOT'].'/MasterPages/required.php'); 
    $course_info = getCourse($pdo, GET('id'));
+   if (empty($course_info))
+         header('Location: index.php');
    $course_rating = getCourseRating($pdo, GET('id'));
    //updateRatings($pdo, GET('id'), "course");
    $rating_comments = getComments($pdo, GET('id'), "course");
+   $course_teachers = getCourseTeachers($pdo, GET('id'));
+   //print_r($course_teachers);
 ?>
 <!DOCTYPE html>
 <html>
@@ -34,10 +38,17 @@
          </div>
       </header>
       
-      <div class="container wrapper" > <!--id="start"> -->
+      <div class="container wrapper" id="start">
          <div class="row">
             <div class="col-md-8">
                <h1 class="profile-title"><?php echo $course_info['course_name']; ?></h1>
+               <?php foreach ($course_teachers as $teacher) { ?>
+                  <a href="teacher-profile.php?id=<?php echo $teacher['id']; ?>" class="sub-rating">
+                     <h4>
+                        <strong><?php echo $teacher['name']."'s" ?></strong> course rating:  <?php echo round(($teacher['rating'] + $course_rating['general']) / 2, 1) ?>%
+                     </h4>
+                  </a>
+               <?php } ?>
             </div>
             <div class="col-md-4">
                <div class="col-md-2 progress-circle progress-circle-general">
@@ -96,8 +107,17 @@
             <input type="hidden" value="1" name="t_or_c"/>
             
             <div class="col-md-2 comment-vote">
-               <button id="course-up-<?php echo $comment['rating_id'] ?>" class="glyphicon glyphicon-chevron-up" onclick="upvote(<?php echo $comment['rating_id'] ?>, 1, <?php echo $_SESSION['user_id']; ?>)"></button>
-               <button id="course-down-<?php echo $comment['rating_id'] ?>" class="glyphicon glyphicon-chevron-down" onclick="downvote(<?php echo $comment['rating_id'] ?>, 1, <?php echo $_SESSION['user_id']; ?>)"></button>
+               <?php //if ($comment['student_id'] == ) ?>
+               <?php 
+                  //$upvote_class = ($comment['student_id'] == $_SESSION['user_id'] && $comment['vote'] == 1) ? " upvote-active" : "" ; 
+                  //$downvote_class = ($comment['student_id'] == $_SESSION['user_id'] && $comment['vote'] == -1) ? " downvote-active" : "" ; 
+                  $upvote_class = getUserVote($pdo, $_SESSION['user_id'], $comment['rating_id'], 'c', 'u');
+                  $downvote_class = getUserVote($pdo, $_SESSION['user_id'], $comment['rating_id'], 'c', 'd');
+               ?> 
+               <?php if ($_SESSION['rank'] == 1) { ?>
+                  <button id="course-up-<?php echo $comment['rating_id'] ?>" class="glyphicon glyphicon-chevron-up<?php echo $upvote_class; ?>" onclick="upvote(<?php echo $comment['rating_id'] ?>, 'c', <?php echo $_SESSION['user_id']; ?>)"></button>
+                  <button id="course-down-<?php echo $comment['rating_id'] ?>" class="glyphicon glyphicon-chevron-down<?php echo $downvote_class; ?>" onclick="downvote(<?php echo $comment['rating_id'] ?>, 'c', <?php echo $_SESSION['user_id']; ?>)"></button>
+               <?php } ?>
             </div>
             <div class="col-md-3">
                <p><?php echo $comment['rating_date']; ?></p>
